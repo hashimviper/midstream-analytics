@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ADNOC Midstream Mass-Balance Intelligence</title>
+    <link rel="stylesheet" href="vendor/bootstrap.min.css" />
+    <link rel="stylesheet" href="vendor/dataTables.dataTables.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Midstream Mass-Balance Intelligence</h1>
+      <div class="sub">
+        ADNOC Midstream Panorama &nbsp;|&nbsp; <span id="fchip"></span>
+      </div>
+      <div class="tabs" id="tabs">
+        <button class="on" data-v="v1">Overview</button>
+        <button data-v="v2">Telemetry &amp; Anomaly Deep Dive</button>
+        <button data-v="v3">Problem Statements &amp; Recommendations</button>
+      </div>
+    </header>
+    <div id="err" class="err" style="display: none">
+      A required library did not load (Plotly or DataTables). Re-download the
+      file; it must be the full self-contained version.
+    </div>
+    <main>
+      <!-- TAB 1 -->
+      <section class="view on" id="v1">
+        <div class="row g-3 mb-3" id="kpis"></div>
+        <div class="row g-3">
+          <div class="col-12 col-lg-2">
+            <div class="cardx slicer">
+              <h2>product_name</h2>
+              <div class="s">Slicer</div>
+              <div id="slicer"></div>
+            </div>
+          </div>
+          <div class="col-12 col-lg-5">
+            <div class="cardx">
+              <h2>Total Loss BBL</h2>
+              <div class="s">by product_name and source_node</div>
+              <div id="tree" style="height: 380px"></div>
+            </div>
+          </div>
+          <div class="col-12 col-lg-5">
+            <div class="cardx">
+              <h2>Total Gross BBL and Total Loss BBL</h2>
+              <div class="s">by source_node (loss on right axis)</div>
+              <div id="bars" style="height: 380px"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- TAB 2 -->
+      <section class="view" id="v2">
+        <div class="cardx mb-3">
+          <h2>Pipeline Pressure vs. CO2e Emissions Outliers</h2>
+          <div class="s">
+            Hover for batch details, drag to zoom, double-click to reset. Dashed
+            line marks 1,150 psi.
+          </div>
+          <div id="scatter" style="height: 430px"></div>
+        </div>
+        <div class="cardx">
+          <h2>High-Risk Operational Batch Audit Log</h2>
+          <div class="tools">
+            <button class="btnx" onclick="exportCSV()">Export CSV</button
+            ><button class="btnx" onclick="tbl.search('').draw()">
+              Clear search</button
+            ><span class="s mb-0" id="cnt"></span>
+          </div>
+          <div class="s">
+            Rows above 1,150 psi are highlighted. Slicer on the Overview tab
+            also filters this view: <b id="flt">All</b>
+          </div>
+          <table id="tbl" class="display stripe" style="width: 100%">
+            <thead>
+              <tr>
+                <th>batch_id</th>
+                <th>product_name</th>
+                <th>source_node</th>
+                <th>destination_node</th>
+                <th>loss_volume_bbl</th>
+                <th>co2e_emissions_tons</th>
+                <th>pipeline_pressure_psi</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+      </section>
+      <!-- TAB 3 -->
+      <section class="view" id="v3">
+        <div class="row g-3 mb-3">
+          <div class="col-12 col-lg-6">
+            <div class="cardx ps r">
+              <h2>Problem Statement 1: High-Pressure Vapor Displacement</h2>
+              <div id="ps1"></div>
+            </div>
+          </div>
+          <div class="col-12 col-lg-6">
+            <div class="cardx ps">
+              <h2>
+                Problem Statement 2: Metering Drift &amp; Loss Volatility in
+                Condensate Streams
+              </h2>
+              <div id="ps2"></div>
+            </div>
+          </div>
+        </div>
+        <div class="cardx">
+          <h2>Actionable Recommendations Matrix</h2>
+          <div class="s">Filter by priority or search any column.</div>
+          <div class="d-flex flex-wrap gap-2 align-items-center mb-2">
+            <div id="chips" class="d-flex gap-2 flex-wrap"></div>
+            <input
+              id="rs"
+              class="form-control form-control-sm ms-auto"
+              style="max-width: 240px"
+              placeholder="Search recommendations"
+            />
+          </div>
+          <div class="table-responsive">
+            <table class="table table-sm align-middle">
+              <thead>
+                <tr>
+                  <th>Priority</th>
+                  <th>Identified Issue</th>
+                  <th>Corrective Engineering Action</th>
+                  <th>Responsible Department</th>
+                  <th>Target SLA</th>
+                </tr>
+              </thead>
+              <tbody id="rb"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="vendor/jquery.min.js"></script>
+    <script src="vendor/dataTables.min.js"></script>
+    <script src="vendor/plotly.min.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
